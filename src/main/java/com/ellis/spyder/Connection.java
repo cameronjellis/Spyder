@@ -3,13 +3,16 @@ package com.ellis.spyder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+
 
 /*******************************************************************************
 *
@@ -43,10 +48,14 @@ import org.jsoup.select.Elements;
 
 public class Connection {
 	
+    /**
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
     	Connection connection1 = new Connection();
     	connection1.getWebPage("https://www.siliconmtn.com/contact", 443);
-    	connection1.parse();
+//    	connection1.parse();
     }
 
 	Path filePath = Paths.get("smt.html");
@@ -98,7 +107,7 @@ public class Connection {
 	/**
 	 * @param host
 	 * @param portNumber
-	 * @return
+	 * @return string of html to be parsed by jsoup
 	 * @throws Exception
 	 */
 	public String getWebPage(String host, int portNumber) throws Exception {
@@ -130,14 +139,47 @@ public class Connection {
 		return html.toString();
 	}
 	
-	public Elements parse() throws Exception{
-		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
-		Document doc = Jsoup.parse(html);
-		Elements links = doc.select("a[href]");
-		System.out.println("links~> " + links);
+	
+	
+	
+	/**
+	 * @param login
+	 * @param widget
+	 * @param port
+	 * @return string of html to be parsed by jsoup
+	 * @throws IOException
+	 */
+	public String getWebPage(String login, String widget, int port) throws IOException {
 		
-		return links;		
+        URL loginUrl = new URL(login);
+        URL widgetUrl = new URL(widget);
+        
+        HttpsURLConnection conn = (HttpsURLConnection)loginUrl.openConnection();
+        InputStream is = conn.getInputStream();
+        
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String inputLine;
+		
+		StringBuilder html = new StringBuilder();
+		Map<String, List<String>> headerFields = conn.getHeaderFields();
+        String headerField5 = conn.getHeaderField("Set-Cookie");
+        
+        System.out.println("HF-- " + headerFields);
+        System.out.println("HF5-- " + headerField5);
+		
+        while ((inputLine = br.readLine()) != null) {
+        	html.append(inputLine).append("\n");
+//        	System.out.println("html> " + inputLine);
+        }
+        
+        br.close();
+        
+        System.out.println("html~> " + html);
+		return html.toString();
 	}
+	
+
 
 }
 

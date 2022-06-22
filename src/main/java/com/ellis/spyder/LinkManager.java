@@ -1,5 +1,10 @@
 package com.ellis.spyder;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /*******************************************************************************
 *
 *<b>Title:</b> LinkManager.java
@@ -16,6 +21,11 @@ package com.ellis.spyder;
 
 public class LinkManager {
 	
+	public Set<String> ltp = new HashSet<>();
 	
-	
+	public String nextLink() {
+		
+		
+		return null;
+	}
 }
