@@ -1,9 +1,9 @@
 package com.ellis.spyder;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /*******************************************************************************
@@ -20,42 +20,52 @@ import org.jsoup.select.Elements;
 *
 ******************************************************************************/
 
+// handle exceptions
+// clean comments
+// javadocs
+// filesystem save
+// post function
+// clean errors/warnings/sonarlints
+
 public class Spyder {
 	
 	List<String> initialUrls = new ArrayList<>();
-	
-	private SpyderLogger spyLog = new SpyderLogger();
-	
-	private Connection connection = new Connection();
-	private Parser parser = new Parser();
-	private LinkManager linkMgr = new LinkManager();
-	
-	
 	
 	/**
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		System.out.println("~spyder~");
-		
+
 		Spyder spyder1 = new Spyder();
-		
 		spyder1.spy();
+		System.out.println("~spyder~");
 	}
-	
+
 	/**
 	 * this is the flow control method, will instantiate and call all other 
 	 * classes and methods
 	 * @throws Exception
 	 */
 	public void spy() throws Exception {
+			
+		SpyderLogger spyLog = new SpyderLogger();
+		Connection connection = new Connection();
+		Parser parser = new Parser();
+		LinkManager linkMgr = new LinkManager();
 		
 		spyLog.log("this is the spyder.spy() method");	
 		
-		String html = connection.getWebPage("https://www.siliconmtn.com", 443);
+		String homeHtml = connection.getWebPage(new URL("https://www.siliconmtn.com"), 443);
 		
-		Elements linkList = parser.parse(html);
+		Elements linkList = parser.parse(homeHtml);
+		
+		linkMgr.getLtp().addAll(parser.parseLinks(linkList));
+		linkMgr.formatUrls();
+		
+		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.getLtp());
+		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
+		
 		
 		// loop linkList and only add abs:links starting with siliconmtn
 //		for (Element link : linkList) {
@@ -63,14 +73,9 @@ public class Spyder {
 //			String absHref = link.attr("abs:href");
 //			spyLog.log("~abs~> " + absHref);
 //		}
-//		
 //		linkMgr.ltp.addAll(linkList);
 		
-		
-		
-		
-		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.ltp);
-		
+	
 	// connect with the initial list item from linkManager
 		
 	// send all links as urls to LinkManager to add to list

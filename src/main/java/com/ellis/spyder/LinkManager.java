@@ -1,5 +1,7 @@
 package com.ellis.spyder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,12 +22,57 @@ import java.util.Set;
 ******************************************************************************/
 
 public class LinkManager {
+
+
+	private Set<String> ltp = new HashSet<>();
+	private List<URL> urltp = new ArrayList<>();
 	
-	public Set<String> ltp = new HashSet<>();
 	
-	public String nextLink() {
+	public List<URL> formatUrls() throws MalformedURLException{
+		
+		String baseURL = "https://www.siliconmtn.com";
+		
+		for (String link : ltp) {
+			URL toParse = new URL(baseURL + link);
+			urltp.add(toParse);
+		}
+		
+		
+		return urltp;
+	}
+	
+	public String nextUrl() {
 		
 		
 		return null;
+	}
+	
+	
+	/**
+	 * @return the ltp
+	 */
+	public Set<String> getLtp() {
+		return ltp;
+	}
+
+	/**
+	 * @param ltp the ltp to set
+	 */
+	public void setLtp(Set<String> ltp) {
+		this.ltp = ltp;
+	}
+
+	/**
+	 * @return the urltp
+	 */
+	public List<URL> getUrltp() {
+		return urltp;
+	}
+
+	/**
+	 * @param urltp the urltp to set
+	 */
+	public void setUrltp(List<URL> urltp) {
+		this.urltp = urltp;
 	}
 }
