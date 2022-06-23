@@ -36,12 +36,12 @@ import javax.net.ssl.HttpsURLConnection;
 public class Connection {
 
 
-	Path filePath = Paths.get("smt.html");
-	File thisFile = new File("MySocket.java");
-	File htmlFile = new File("smt.html");
-	URL url;
-	int port;
-	String cookie;
+//	Path filePath = Paths.get("smt.html");
+//	File thisFile = new File("MySocket.java");
+//	File htmlFile = new File("smt.html");
+	private URL url;
+	private int port;
+	private String cookie;
 	
 	/**
 	 * 
@@ -50,6 +50,8 @@ public class Connection {
 		super();
 	}
 	
+
+
 	/**
 	 * @param url
 	 * @param port
@@ -58,7 +60,6 @@ public class Connection {
 		super();
 		this.url = url;
 		this.port = port;
-		
 	}
 
 	/**
@@ -144,6 +145,20 @@ public class Connection {
         getWebPage(widget, port);
         
 		return html.toString();
+	}
+	
+	/**
+	 * @return the cookie
+	 */
+	public String getCookie() {
+		return cookie;
+	}
+
+	/**
+	 * @param cookie the cookie to set
+	 */
+	public void setCookie(String cookie) {
+		this.cookie = cookie;
 	}
 	
 	/**
