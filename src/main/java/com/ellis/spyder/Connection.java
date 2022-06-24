@@ -1,17 +1,13 @@
 package com.ellis.spyder;
 
 import java.io.BufferedReader;
-import java.io.File;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-
 import javax.net.ssl.HttpsURLConnection;
 
 
@@ -32,7 +28,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 // conn.getRequestProperties();
 
-
 public class Connection {
 
 
@@ -49,11 +44,6 @@ public class Connection {
 	public Connection() {
 		super();
 	}
-<<<<<<< HEAD
-=======
-	
-
->>>>>>> fc3a2415e7b0f06b361d079af609cc1ae440e9bb
 
 	/**
 	 * @param url
@@ -78,6 +68,7 @@ public class Connection {
 //        String httpsURL = host;
 //        URL myUrl = new URL(httpsURL);
         HttpsURLConnection getConn = (HttpsURLConnection)host.openConnection();
+        getConn.setRequestProperty("Cookie", cookie);
         InputStream is = getConn.getInputStream();
         
         InputStreamReader isr = new InputStreamReader(is);
@@ -89,12 +80,12 @@ public class Connection {
         String cookieField = getConn.getHeaderField("Set-Cookie");
         
         if (this.cookie == null) {
-        	this.cookie = getConn.getHeaderField("Set-Cookie");
+        	this.cookie = getConn.getHeaderField("Set-Cookie").split(";")[0];
         }
         
         System.out.println("HFs-- " + headerFields);
-        System.out.println("HF5-- " + cookieField);
-        System.out.println("cookie-- " + this.cookie);
+        System.out.println("HF5-- \n" + cookieField + "\n");
+        System.out.println("~~~~cookie~~~~ \n " + this.cookie + "\n");
 		
         while ((inputLine = br.readLine()) != null) {
         	html.append(inputLine).append("\n");
@@ -125,46 +116,24 @@ public class Connection {
 		// html2 = getWebPage()
         
         HttpsURLConnection postConn = (HttpsURLConnection)login.openConnection();
-        InputStream is = postConn.getInputStream();
+        postConn.setRequestMethod("POST");
+        postConn.setDoOutput(true);
+        postConn.setRequestProperty("Authorization", "Basic Y2FtZXJvbi5lbGxpc0BzaWxpY29ubXRuLmNvbTpTbXRydWwzcyE=");
+        postConn.setRequestProperty("Content-Type", "application/json");
         
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String inputLine;
+        String data = "{\n  \'emailAddress': 'cameron.ellis@siliconmtn.com',\n  \'password': 'Smtrul3s!',\n}";
         
-		
-		Map<String, List<String>> headerFields = postConn.getHeaderFields();
-        String cookieField = postConn.getHeaderField("Set-Cookie");
-        StringBuilder html = new StringBuilder();
+        byte[] out = data.getBytes(StandardCharsets.UTF_8);
         
-        System.out.println("HF-- " + headerFields);
-        System.out.println("HF5-- " + cookieField);
-		
-        while ((inputLine = br.readLine()) != null) {
-        	html.append(inputLine).append("\n");
-//        	System.out.println("html> " + inputLine);
-        }
+        OutputStream os = postConn.getOutputStream();
+        os.write(out);
         
-        br.close();
+        System.out.println("~~RESPONSE CODE~~\n" + postConn.getResponseCode() + " " + postConn.getResponseMessage() + "\n~~RESPONSE CODE~~");
         
-        System.out.println("html~> " + html);
+//        String html1 = getWebPage(widget);
         
-        String html1 = getWebPage(widget);
         
-		return html1;
-	}
-	
-	/**
-	 * @return the cookie
-	 */
-	public String getCookie() {
-		return cookie;
-	}
-
-	/**
-	 * @param cookie the cookie to set
-	 */
-	public void setCookie(String cookie) {
-		this.cookie = cookie;
+		return null;
 	}
 	
 	/**
@@ -209,6 +178,13 @@ public class Connection {
 		this.port = port;
 	}
 }
+
+// -- jsoup post method?
+//Document document  = Jsoup.connect("http://applicationURL/login.jsp")
+//.data("email", "temail@mail.com")
+//.data("password", "123password")
+//.data("login", "login")
+//.post();
 
 // ------ THIS WORKS FOR SMT HOMEPAGE ------
 //public static void main(String[] args) throws Exception {

@@ -3,8 +3,6 @@ package com.ellis.spyder;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.jsoup.select.Elements;
 
@@ -31,7 +29,8 @@ import org.jsoup.select.Elements;
 
 public class Spyder {
 	
-	List<String> initialUrls = new ArrayList<>();
+	List<String> htmls = new ArrayList<>();
+	// turn htmls into a hashMap key = resource, value = html
 	
 	/**
 	 * @param args
@@ -43,23 +42,7 @@ public class Spyder {
 		spyder1.spy();
 		System.out.println("~spyder~");
 	}
-	
-	/**
-	 * @return
-	 */
-	public URL nextUrl(Map<URL, Boolean> urls) {
-		
-		for (Entry<URL, Boolean> entry : urls.entrySet()) {
-			if (!entry.getValue()) {
-				entry.setValue(true);
-				
-				return entry.getKey();
-			} 
-		} 
-		
-		return null;
-	}
-	
+
 
 	/**
 	 * this is the flow control method, will instantiate and call all other 
@@ -86,24 +69,36 @@ public class Spyder {
 		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.getLtp());
 		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
 		
-		
-		
-		
-		// loop linkList and only add abs:links starting with siliconmtn
-//		for (Element link : linkList) {
-//			spyLog.log("~rel~> " + link);
-//			String absHref = link.attr("abs:href");
-//			spyLog.log("~abs~> " + absHref);
-//		}
-//		linkMgr.ltp.addAll(linkList);
-		
-	
-	// connect with the initial list item from linkManager
-		
-	// send all links as urls to LinkManager to add to list
-		
-	// conditional for if url == https://smt-stage.qa.siliconmtn.com/admintool
-	// method is post - login, navigate to widget and write to file
-	// widget tool - https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE
+		for (URL link : linkMgr.getUrltp()) {
+			
+			if (!link.toString().equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
+				continue;
+			}
+			
+			// save.write(connection.getWebPage(link))
+			
+			htmls.add(connection.postWidget(link, link));
+		}		
+//		System.out.println(htmls);
+
 	}
 }
+
+//
+///**
+// * key is a URL, value is whether it has been downloaded or not
+// * @return
+// */
+//public URL nextUrl(Map<URL, Boolean> urls) {
+//	
+//	for (Entry<URL, Boolean> entry : urls.entrySet()) {
+//		if (!entry.getValue()) {
+////			entry.setValue(true);
+//			
+//			return entry.getKey();
+//		} 
+//	} 
+//	
+//	return null;
+//}
+//

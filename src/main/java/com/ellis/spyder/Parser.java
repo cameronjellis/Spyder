@@ -24,8 +24,6 @@ import org.jsoup.select.Elements;
 
 public class Parser {
 	
-	
-
 	/**
 	 * @param html
 	 * @return

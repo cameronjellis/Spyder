@@ -28,10 +28,20 @@ public class LinkManager {
 	private Set<String> ltp = new HashSet<>();
 	private List<URL> urltp = new ArrayList<>();
 	
+	/**
+	 * @param initialUrl
+	 * @throws MalformedURLException
+	 */
 	public LinkManager(String initialUrl) throws MalformedURLException {
 		urltp.add(new URL(initialUrl));
 	}
 	
+	/**
+	 * 
+	 */
+	public LinkManager() {
+		super();
+	}	
 	
 	/**
 	 * @return

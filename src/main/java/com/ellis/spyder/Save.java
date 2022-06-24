@@ -15,5 +15,7 @@ package com.ellis.spyder;
 ******************************************************************************/
 
 public class Save {
-	// map with a key of hasBeenSaved? or check folder for the file?
+	// create folder in root directory
+	
+	// iterate over list and write file with the name of siliconmtn + the resource -"/"
 }
