@@ -49,8 +49,6 @@ public class Connection {
 	public Connection() {
 		super();
 	}
-	
-
 
 	/**
 	 * @param url
@@ -68,34 +66,33 @@ public class Connection {
 	 * @return string of html to be parsed by jsoup
 	 * @throws Exception
 	 */
-	public String getWebPage(URL host, int portNumber) throws Exception {
+	public String getWebPage(URL host) throws Exception {
 		
-		// if check to see if 
+		// if check to see if host.matches 
 		
 //        String httpsURL = host;
 //        URL myUrl = new URL(httpsURL);
-        HttpsURLConnection conn = (HttpsURLConnection)host.openConnection();
-        InputStream is = conn.getInputStream();
+        HttpsURLConnection getConn = (HttpsURLConnection)host.openConnection();
+        InputStream is = getConn.getInputStream();
         
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         String inputLine;
 		
 		StringBuilder html = new StringBuilder();
-		Map<String, List<String>> headerFields = conn.getHeaderFields();
-        String cookieField = conn.getHeaderField("Set-Cookie");
+		Map<String, List<String>> headerFields = getConn.getHeaderFields();
+        String cookieField = getConn.getHeaderField("Set-Cookie");
         
         if (this.cookie == null) {
-        	this.cookie = conn.getHeaderField("Set-Cookie");
+        	this.cookie = getConn.getHeaderField("Set-Cookie");
         }
         
-        System.out.println("HF-- " + headerFields);
+        System.out.println("HFs-- " + headerFields);
         System.out.println("HF5-- " + cookieField);
         System.out.println("cookie-- " + this.cookie);
 		
         while ((inputLine = br.readLine()) != null) {
         	html.append(inputLine).append("\n");
-//        	System.out.println("html> " + inputLine);
         }
         
         br.close();
@@ -113,21 +110,25 @@ public class Connection {
 	 * @return string of html to be parsed by jsoup
 	 * @throws Exception 
 	 */
-	public String getWebPage(URL login, URL widget, int port) throws Exception {
+	public String postWidget(URL login, URL widget) throws Exception {
 		
 //        URL loginUrl = new URL(login);
 //        URL widgetUrl = new URL(widget);
+		
+		// post function to login - if status == 200 - getwebpage(widget)
+		// html1 = getWebPage()
+		// html2 = getWebPage()
         
-        HttpsURLConnection conn = (HttpsURLConnection)login.openConnection();
-        InputStream is = conn.getInputStream();
+        HttpsURLConnection postConn = (HttpsURLConnection)login.openConnection();
+        InputStream is = postConn.getInputStream();
         
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         String inputLine;
         
 		
-		Map<String, List<String>> headerFields = conn.getHeaderFields();
-        String cookieField = conn.getHeaderField("Set-Cookie");
+		Map<String, List<String>> headerFields = postConn.getHeaderFields();
+        String cookieField = postConn.getHeaderField("Set-Cookie");
         StringBuilder html = new StringBuilder();
         
         System.out.println("HF-- " + headerFields);
@@ -142,9 +143,9 @@ public class Connection {
         
         System.out.println("html~> " + html);
         
-        getWebPage(widget, port);
+        String html1 = getWebPage(widget);
         
-		return html.toString();
+		return html1;
 	}
 	
 	/**

@@ -3,6 +3,8 @@ package com.ellis.spyder;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.jsoup.select.Elements;
 
@@ -41,6 +43,23 @@ public class Spyder {
 		spyder1.spy();
 		System.out.println("~spyder~");
 	}
+	
+	/**
+	 * @return
+	 */
+	public URL nextUrl(Map<URL, Boolean> urls) {
+		
+		for (Entry<URL, Boolean> entry : urls.entrySet()) {
+			if (!entry.getValue()) {
+				entry.setValue(true);
+				
+				return entry.getKey();
+			} 
+		} 
+		
+		return null;
+	}
+	
 
 	/**
 	 * this is the flow control method, will instantiate and call all other 
@@ -52,11 +71,12 @@ public class Spyder {
 		SpyderLogger spyLog = new SpyderLogger();
 		Connection connection = new Connection();
 		Parser parser = new Parser();
-		LinkManager linkMgr = new LinkManager();
+		LinkManager linkMgr = new LinkManager("https://smt-stage.qa.siliconmtn.com"
+				+ "/sb/admintool?cPage=index&actionId=MODULE");
 		
 		spyLog.log("this is the spyder.spy() method");	
 		
-		String homeHtml = connection.getWebPage(new URL("https://www.siliconmtn.com"), 443);
+		String homeHtml = connection.getWebPage(new URL("https://www.siliconmtn.com"));
 		
 		Elements linkList = parser.parse(homeHtml);
 		
@@ -65,6 +85,8 @@ public class Spyder {
 		
 		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.getLtp());
 		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
+		
+		
 		
 		
 		// loop linkList and only add abs:links starting with siliconmtn

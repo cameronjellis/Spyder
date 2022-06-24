@@ -23,7 +23,14 @@ import org.jsoup.select.Elements;
 ******************************************************************************/
 
 public class Parser {
+	
+	
 
+	/**
+	 * @param html
+	 * @return
+	 * @throws Exception
+	 */
 	public Elements parse(String html) throws Exception{
 //		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
 		Document doc = Jsoup.parse(html);
@@ -32,6 +39,10 @@ public class Parser {
 		return links;		
 	}
 	
+	/**
+	 * @param links
+	 * @return
+	 */
 	public List<String> parseLinks(Elements links){
 		String regex = "(\\/)([a-zA-Z]+)";
 		List<String> resources = new ArrayList<>();

@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /*******************************************************************************
@@ -23,11 +25,18 @@ import java.util.Set;
 
 public class LinkManager {
 
-
 	private Set<String> ltp = new HashSet<>();
 	private List<URL> urltp = new ArrayList<>();
 	
+	public LinkManager(String initialUrl) throws MalformedURLException {
+		urltp.add(new URL(initialUrl));
+	}
 	
+	
+	/**
+	 * @return
+	 * @throws MalformedURLException
+	 */
 	public List<URL> formatUrls() throws MalformedURLException{
 		
 		String baseURL = "https://www.siliconmtn.com";
@@ -35,18 +44,24 @@ public class LinkManager {
 		for (String link : ltp) {
 			URL toParse = new URL(baseURL + link);
 			urltp.add(toParse);
-		}
-		
-		
+		}		
 		return urltp;
 	}
 	
-	public String nextUrl() {
+	/**
+	 * @param urls
+	 * @return
+	 */
+	public Map<URL, Boolean> mapInit(List<URL> urls){
 		
+		Map<URL, Boolean> urlMap = new LinkedHashMap<>();
 		
-		return null;
+		for (URL url : urls) {
+			urlMap.put(url, false);
+		}
+		
+		return urlMap;
 	}
-	
 	
 	/**
 	 * @return the ltp
