@@ -49,6 +49,11 @@ public class Connection {
 	public Connection() {
 		super();
 	}
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> fc3a2415e7b0f06b361d079af609cc1ae440e9bb
 
 	/**
 	 * @param url
@@ -146,6 +151,20 @@ public class Connection {
         String html1 = getWebPage(widget);
         
 		return html1;
+	}
+	
+	/**
+	 * @return the cookie
+	 */
+	public String getCookie() {
+		return cookie;
+	}
+
+	/**
+	 * @param cookie the cookie to set
+	 */
+	public void setCookie(String cookie) {
+		this.cookie = cookie;
 	}
 	
 	/**
