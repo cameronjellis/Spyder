@@ -3,11 +3,10 @@ package com.ellis.spyder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 /*******************************************************************************
 *
@@ -25,7 +24,7 @@ import java.util.Set;
 
 public class LinkManager {
 
-	private Set<String> ltp = new HashSet<>();
+	private List<String> ltp = new ArrayList<>();
 	private List<URL> urltp = new ArrayList<>();
 	
 	/**
@@ -76,14 +75,14 @@ public class LinkManager {
 	/**
 	 * @return the ltp
 	 */
-	public Set<String> getLtp() {
+	public List<String> getLtp() {
 		return ltp;
 	}
 
 	/**
 	 * @param ltp the ltp to set
 	 */
-	public void setLtp(Set<String> ltp) {
+	public void setLtp(List<String> ltp) {
 		this.ltp = ltp;
 	}
 

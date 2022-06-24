@@ -50,7 +50,8 @@ public class Spyder {
 	 * @throws Exception
 	 */
 	public void spy() throws Exception {
-			
+		
+		Save saver = new Save();
 		SpyderLogger spyLog = new SpyderLogger();
 		Connection connection = new Connection();
 		Parser parser = new Parser();
@@ -69,15 +70,21 @@ public class Spyder {
 		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.getLtp());
 		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
 		
-		for (URL link : linkMgr.getUrltp()) {
+		
+		for (int i = 0; i < linkMgr.getUrltp().size() -1; i++) {
 			
-			if (!link.toString().equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
+			URL link = linkMgr.getUrltp().get(i);
+			
+			if (link.toString().equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
 				continue;
 			}
 			
-			// save.write(connection.getWebPage(link))
+			String content = connection.getWebPage(link);
 			
-			htmls.add(connection.postWidget(link, link));
+			saver.writeFile(linkMgr.getLtp().get(i), content);
+			
+			htmls.add(content);
+//			htmls.add(connection.postWidget(link, link));
 		}		
 //		System.out.println(htmls);
 

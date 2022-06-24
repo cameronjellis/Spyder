@@ -1,5 +1,9 @@
 package com.ellis.spyder;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /*******************************************************************************
 *
 *<b>Title:</b> Save.java
@@ -16,6 +20,21 @@ package com.ellis.spyder;
 
 public class Save {
 	// create folder in root directory
+	
+	public void writeFile(String fileName, String content) {
+		// add check for if file exists 		
+		
+		File newDir = new File(System.getProperty("siliconhtml"));
+		
+		File newFile = new File(newDir.getAbsolutePath() + File.separator + "siliconmtn" + fileName + ".html");
+		
+		try {
+			FileWriter writer = new FileWriter(newFile);
+			writer.write(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// iterate over list and write file with the name of siliconmtn + the resource -"/"
 }
