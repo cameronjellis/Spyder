@@ -81,7 +81,7 @@ public class Spyder {
 			
 			String content = connection.getWebPage(link);
 			
-			saver.writeFile(linkMgr.getLtp().get(i), content);
+//			saver.writeFile(linkMgr.getLtp().get(i), content);
 			
 			htmls.add(content);
 //			htmls.add(connection.postWidget(link, link));

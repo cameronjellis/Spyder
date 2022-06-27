@@ -72,6 +72,10 @@ public class LinkManager {
 		return urlMap;
 	}
 	
+	// hasNext() return boolean if there are elements = false
+	
+	// getNext() will return the next element = false
+	
 	/**
 	 * @return the ltp
 	 */

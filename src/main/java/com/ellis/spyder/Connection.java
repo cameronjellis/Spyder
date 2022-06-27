@@ -1,14 +1,20 @@
 package com.ellis.spyder;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 
 /*******************************************************************************
@@ -62,8 +68,18 @@ public class Connection {
 	 * @throws Exception
 	 */
 	public String getWebPage(URL host) throws Exception {
+		// sslsocket class that just returns the connection?
 		
-		// if check to see if host.matches 
+//		try {
+//			Socket echoSocket = new Socket("www.siliconmtn.com", 443);
+//			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+//			SSLSocket sslSocket = (SSLSocket) factory.createSocket(echoSocket, "www.siliconmtn.com", 443, true);
+//			PrintWriter out = new PrintWriter(sslSocket.getOutputStream());
+//		    BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}		
+
 		
 //        String httpsURL = host;
 //        URL myUrl = new URL(httpsURL);
@@ -130,8 +146,7 @@ public class Connection {
         
         System.out.println("~~RESPONSE CODE~~\n" + postConn.getResponseCode() + " " + postConn.getResponseMessage() + "\n~~RESPONSE CODE~~");
         
-//        String html1 = getWebPage(widget);
-        
+//        String html1 = getWebPage(widget);       
         
 		return null;
 	}
