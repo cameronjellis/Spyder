@@ -56,12 +56,12 @@ public class Spyder {
 		Connection connection = new Connection();
 		Parser parser = new Parser();
 		LinkManager linkMgr = new LinkManager("https://smt-stage.qa.siliconmtn.com"
-				+ "/sb/admintool?cPage=index&actionId=MODULE");
+				+ "/sb/admintool?cPage=index&actionId=MODULE", "www.siliconmtn.com");
 		
 		spyLog.log("this is the spyder.spy() method");	
 		
-		String homeHtml = connection.getWebPage(new URL("https://www.siliconmtn.com"));
-		
+		String homeHtml = connection.getWebPage("/");
+		System.out.println("homeHTML" + homeHtml);
 		Elements linkList = parser.parse(homeHtml);
 		
 		linkMgr.getLtp().addAll(parser.parseLinks(linkList));
@@ -71,22 +71,22 @@ public class Spyder {
 		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
 		
 		
-		for (int i = 0; i < linkMgr.getUrltp().size() -1; i++) {
+		for (int i = 0; i < linkMgr.getLtp().size(); i++) {
 			
-			URL link = linkMgr.getUrltp().get(i);
+			String link = linkMgr.getLtp().get(i);
 			
-			if (link.toString().equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
+			if (link.equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
 				continue;
 			}
 			
 			String content = connection.getWebPage(link);
 			
-//			saver.writeFile(linkMgr.getLtp().get(i), content);
+//			saver.writeFile(linkMgr.getLtp().get(i).substring(0 , linkMgr.getLtp().get(i).length() -1), content);
 			
 			htmls.add(content);
 //			htmls.add(connection.postWidget(link, link));
 		}		
-//		System.out.println(htmls);
+		System.out.println(htmls.size());
 
 	}
 }

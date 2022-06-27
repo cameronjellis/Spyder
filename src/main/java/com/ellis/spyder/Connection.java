@@ -68,7 +68,7 @@ public class Connection {
 	 * @return string of html to be parsed by jsoup
 	 * @throws Exception
 	 */
-	public String getWebPage(URL host) throws Exception {
+	public String getWebPage(String path) throws Exception {
 		// sslsocket class that just returns the connection?
 		// try catch??
 		
@@ -81,26 +81,26 @@ public class Connection {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream())));
 		BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
 
-		out.println("GET / HTTP/1.0");
+		out.println("GET " + path + " HTTP/1.0");
 		out.println("Host: www.siliconmtn.com");
 		out.println();
 		out.flush();
 		
 		String inputLine;
 		StringBuilder html = new StringBuilder();
-		StringBuilder header = new StringBuilder();
+//		StringBuilder header = new StringBuilder();
 		
 		while ((inputLine = in.readLine()) != null) {
 //			System.out.println(inputLine);
-			header.append(inputLine).append("\n");
+			html.append(inputLine).append("\n");
 		}
 		
-		while ((inputLine = in.readLine()) != null && inputLine.length() > 0) {
-//			System.out.println(inputLine);
-			html.append(inputLine).append("\n");
-		} 
+//		while ((inputLine = in.readLine()) != null) {
+////			System.out.println(inputLine);
+//			html.append(inputLine).append("\n");
+//		} 
 		
-		System.out.println(header.toString());
+//		System.out.println(header.toString());
 		System.out.println(html.toString());
 		
 	return html.toString();

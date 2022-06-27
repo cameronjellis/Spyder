@@ -25,14 +25,15 @@ import java.util.Map;
 public class LinkManager {
 
 	private List<String> ltp = new ArrayList<>();
-	private List<URL> urltp = new ArrayList<>();
+	private List<String> urltp = new ArrayList<>();
 	
 	/**
 	 * @param initialUrl
 	 * @throws MalformedURLException
 	 */
-	public LinkManager(String initialUrl) throws MalformedURLException {
-		urltp.add(new URL(initialUrl));
+	public LinkManager(String widgetUrl, String homeUrl) throws MalformedURLException {
+		urltp.add(widgetUrl);
+		urltp.add(homeUrl);
 	}
 	
 	/**
@@ -46,12 +47,12 @@ public class LinkManager {
 	 * @return
 	 * @throws MalformedURLException
 	 */
-	public List<URL> formatUrls() throws MalformedURLException{
+	public List<String> formatUrls() throws MalformedURLException{
 		
 		String baseURL = "https://www.siliconmtn.com";
 		
 		for (String link : ltp) {
-			URL toParse = new URL(baseURL + link);
+			String toParse = baseURL + link;
 			urltp.add(toParse);
 		}		
 		return urltp;
@@ -93,14 +94,14 @@ public class LinkManager {
 	/**
 	 * @return the urltp
 	 */
-	public List<URL> getUrltp() {
+	public List<String> getUrltp() {
 		return urltp;
 	}
 
 	/**
 	 * @param urltp the urltp to set
 	 */
-	public void setUrltp(List<URL> urltp) {
+	public void setUrltp(List<String> urltp) {
 		this.urltp = urltp;
 	}
 }

@@ -28,8 +28,7 @@ public class Save {
 		
 		File newFile = new File(newDir.getAbsolutePath() + File.separator + "siliconmtn" + fileName + ".html");
 		
-		try {
-			FileWriter writer = new FileWriter(newFile);
+		try (FileWriter writer = new FileWriter(newFile)) {
 			writer.write(content);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -32,9 +32,9 @@ public class Parser {
 	public Elements parse(String html) throws Exception{
 //		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
 		Document doc = Jsoup.parse(html);
-		Elements links = doc.select("a[href]");
-
-		return links;		
+//		Elements links = doc.select("a[href]");
+		System.out.println("parser```" + doc.select("a[href]"));
+		return doc.select("a[href]");		
 	}
 	
 	/**
@@ -44,6 +44,7 @@ public class Parser {
 	public List<String> parseLinks(Elements links){
 		String regex = "(\\/)([a-zA-Z]+)";
 		List<String> resources = new ArrayList<>();
+		resources.add("/");
 		
 		for (int i = 0; i < links.size(); i++) {
 			String resource = links.get(i).attr("href");
