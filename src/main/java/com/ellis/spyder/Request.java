@@ -15,6 +15,8 @@ package com.ellis.spyder;
 ******************************************************************************/
 
 public class Request {
+	
+	
 
 	public void getRequest() {
 		

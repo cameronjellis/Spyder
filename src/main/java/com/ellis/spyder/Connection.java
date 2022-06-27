@@ -1,10 +1,11 @@
 package com.ellis.spyder;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
@@ -69,48 +70,71 @@ public class Connection {
 	 */
 	public String getWebPage(URL host) throws Exception {
 		// sslsocket class that just returns the connection?
+		// try catch??
 		
-//		try {
-//			Socket echoSocket = new Socket("www.siliconmtn.com", 443);
-//			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-//			SSLSocket sslSocket = (SSLSocket) factory.createSocket(echoSocket, "www.siliconmtn.com", 443, true);
-//			PrintWriter out = new PrintWriter(sslSocket.getOutputStream());
-//		    BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-//		} catch (Exception e) {
-//			System.out.println(e);
-//		}		
+		Socket echoSocket = new Socket("www.siliconmtn.com", 443);
+		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		SSLSocket sslSocket = (SSLSocket) factory.createSocket(echoSocket, "www.siliconmtn.com", 443, true);
+		
+		sslSocket.startHandshake();
+		
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream())));
+		BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
 
+		out.println("GET / HTTP/1.0");
+		out.println("Host: www.siliconmtn.com");
+		out.println();
+		out.flush();
 		
+		String inputLine;
+		StringBuilder html = new StringBuilder();
+		StringBuilder header = new StringBuilder();
+		
+		while ((inputLine = in.readLine()) != null) {
+//			System.out.println(inputLine);
+			header.append(inputLine).append("\n");
+		}
+		
+		while ((inputLine = in.readLine()) != null && inputLine.length() > 0) {
+//			System.out.println(inputLine);
+			html.append(inputLine).append("\n");
+		} 
+		
+		System.out.println(header.toString());
+		System.out.println(html.toString());
+		
+	return html.toString();
+
 //        String httpsURL = host;
 //        URL myUrl = new URL(httpsURL);
-        HttpsURLConnection getConn = (HttpsURLConnection)host.openConnection();
-        getConn.setRequestProperty("Cookie", cookie);
-        InputStream is = getConn.getInputStream();
-        
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String inputLine;
-		
-		StringBuilder html = new StringBuilder();
-		Map<String, List<String>> headerFields = getConn.getHeaderFields();
-        String cookieField = getConn.getHeaderField("Set-Cookie");
-        
-        if (this.cookie == null) {
-        	this.cookie = getConn.getHeaderField("Set-Cookie").split(";")[0];
-        }
-        
-        System.out.println("HFs-- " + headerFields);
-        System.out.println("HF5-- \n" + cookieField + "\n");
-        System.out.println("~~~~cookie~~~~ \n " + this.cookie + "\n");
-		
-        while ((inputLine = br.readLine()) != null) {
-        	html.append(inputLine).append("\n");
-        }
-        
-        br.close();
-        
-        System.out.println("html~> " + html);
-		return html.toString();
+//		HttpsURLConnection getConn = (HttpsURLConnection) host.openConnection();
+//		getConn.setRequestProperty("Cookie", cookie);
+//		InputStream is = getConn.getInputStream();
+//
+//		InputStreamReader isr = new InputStreamReader(is);
+//		BufferedReader br = new BufferedReader(isr);
+//		String inputLine;
+//
+//		StringBuilder html = new StringBuilder();
+//		Map<String, List<String>> headerFields = getConn.getHeaderFields();
+//		String cookieField = getConn.getHeaderField("Set-Cookie");
+//
+//		if (this.cookie == null) {
+//			this.cookie = getConn.getHeaderField("Set-Cookie");
+//		}
+//
+//		System.out.println("HFs-- " + headerFields);
+//		System.out.println("HF5-- \n" + cookieField + "\n");
+//		System.out.println("~~~~cookie~~~~  \n " + this.cookie + "\n");
+//
+//		while ((inputLine = br.readLine()) != null) {
+//			html.append(inputLine).append("\n");
+//		}
+//
+//		br.close();
+//
+////        System.out.println("html~> " + html);
+//		return html.toString();
 	}
 	
 	/**
