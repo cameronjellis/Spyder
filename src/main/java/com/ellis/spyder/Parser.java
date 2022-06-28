@@ -29,12 +29,12 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public Elements parse(String html) throws Exception{
+	public Elements parse(String html, String tag) throws Exception{
 //		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
 		Document doc = Jsoup.parse(html);
 //		Elements links = doc.select("a[href]");
-		System.out.println("parser```" + doc.select("a[href]"));
-		return doc.select("a[href]");		
+		System.out.println("parser```" + doc.select(tag));
+		return doc.select(tag);		
 	}
 	
 	/**

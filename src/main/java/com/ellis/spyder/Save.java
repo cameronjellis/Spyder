@@ -1,5 +1,6 @@
 package com.ellis.spyder;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,14 +24,22 @@ public class Save {
 	
 	public void writeFile(String fileName, String content) {
 		// add check for if file exists 		
+		if (fileName.length() == 0) {
+			fileName = "home";
+		}
 		
-		File newDir = new File(System.getProperty("siliconhtml"));
+		File newDir = new File("siliconhtml");
 		
-		File newFile = new File(newDir.getAbsolutePath() + File.separator + "siliconmtn" + fileName + ".html");
+		if (!newDir.exists()) {
+			newDir.mkdirs();
+		}
 		
-		try (FileWriter writer = new FileWriter(newFile)) {
+		File newFile = new File(newDir, (fileName + ".html"));
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFile))) {
 			writer.write(content);
-		} catch (IOException e) {
+			System.out.println("wrote " + fileName + ".html");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

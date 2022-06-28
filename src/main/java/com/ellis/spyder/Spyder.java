@@ -1,8 +1,10 @@
 package com.ellis.spyder;
 
-import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.jsoup.select.Elements;
 
@@ -40,7 +42,6 @@ public class Spyder {
 
 		Spyder spyder1 = new Spyder();
 		spyder1.spy();
-		System.out.println("~spyder~");
 	}
 
 
@@ -58,11 +59,11 @@ public class Spyder {
 		LinkManager linkMgr = new LinkManager("https://smt-stage.qa.siliconmtn.com"
 				+ "/sb/admintool?cPage=index&actionId=MODULE", "www.siliconmtn.com");
 		
-		spyLog.log("this is the spyder.spy() method");	
+		
 		
 		String homeHtml = connection.getWebPage("/");
 		System.out.println("homeHTML" + homeHtml);
-		Elements linkList = parser.parse(homeHtml);
+		Elements linkList = parser.parse(homeHtml, "a[href]");
 		
 		linkMgr.getLtp().addAll(parser.parseLinks(linkList));
 		linkMgr.formatUrls();
@@ -81,7 +82,12 @@ public class Spyder {
 			
 			String content = connection.getWebPage(link);
 			
-//			saver.writeFile(linkMgr.getLtp().get(i).substring(0 , linkMgr.getLtp().get(i).length() -1), content);
+			String fileName = linkMgr.getLtp().get(i).substring(1 , 
+					linkMgr.getLtp().get(i).length());
+			
+
+			
+			saver.writeFile(fileName, content);
 			
 			htmls.add(content);
 //			htmls.add(connection.postWidget(link, link));
@@ -89,6 +95,8 @@ public class Spyder {
 		System.out.println(htmls.size());
 
 	}
+	
+	// try catch finally
 }
 
 //

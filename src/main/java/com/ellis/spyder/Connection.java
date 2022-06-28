@@ -83,6 +83,7 @@ public class Connection {
 
 		out.println("GET " + path + " HTTP/1.0");
 		out.println("Host: www.siliconmtn.com");
+		out.println("Cookie: " + this.cookie);
 		out.println();
 		out.flush();
 		
@@ -105,36 +106,6 @@ public class Connection {
 		
 	return html.toString();
 
-//        String httpsURL = host;
-//        URL myUrl = new URL(httpsURL);
-//		HttpsURLConnection getConn = (HttpsURLConnection) host.openConnection();
-//		getConn.setRequestProperty("Cookie", cookie);
-//		InputStream is = getConn.getInputStream();
-//
-//		InputStreamReader isr = new InputStreamReader(is);
-//		BufferedReader br = new BufferedReader(isr);
-//		String inputLine;
-//
-//		StringBuilder html = new StringBuilder();
-//		Map<String, List<String>> headerFields = getConn.getHeaderFields();
-//		String cookieField = getConn.getHeaderField("Set-Cookie");
-//
-//		if (this.cookie == null) {
-//			this.cookie = getConn.getHeaderField("Set-Cookie");
-//		}
-//
-//		System.out.println("HFs-- " + headerFields);
-//		System.out.println("HF5-- \n" + cookieField + "\n");
-//		System.out.println("~~~~cookie~~~~  \n " + this.cookie + "\n");
-//
-//		while ((inputLine = br.readLine()) != null) {
-//			html.append(inputLine).append("\n");
-//		}
-//
-//		br.close();
-//
-////        System.out.println("html~> " + html);
-//		return html.toString();
 	}
 	
 	/**
@@ -174,6 +145,11 @@ public class Connection {
         
 		return null;
 	}
+	
+//	public void close() {
+//		out.close();
+//		in.close();
+//	}
 	
 	/**
 	 * @return the cookie
@@ -338,3 +314,35 @@ public class Connection {
 //}
 //
 //br.close();
+
+
+//String httpsURL = host;
+//URL myUrl = new URL(httpsURL);
+//HttpsURLConnection getConn = (HttpsURLConnection) host.openConnection();
+//getConn.setRequestProperty("Cookie", cookie);
+//InputStream is = getConn.getInputStream();
+//
+//InputStreamReader isr = new InputStreamReader(is);
+//BufferedReader br = new BufferedReader(isr);
+//String inputLine;
+//
+//StringBuilder html = new StringBuilder();
+//Map<String, List<String>> headerFields = getConn.getHeaderFields();
+//String cookieField = getConn.getHeaderField("Set-Cookie");
+//
+//if (this.cookie == null) {
+//	this.cookie = getConn.getHeaderField("Set-Cookie");
+//}
+//
+//System.out.println("HFs-- " + headerFields);
+//System.out.println("HF5-- \n" + cookieField + "\n");
+//System.out.println("~~~~cookie~~~~  \n " + this.cookie + "\n");
+//
+//while ((inputLine = br.readLine()) != null) {
+//	html.append(inputLine).append("\n");
+//}
+//
+//br.close();
+//
+////System.out.println("html~> " + html);
+//return html.toString();
