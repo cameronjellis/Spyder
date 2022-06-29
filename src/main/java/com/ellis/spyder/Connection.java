@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -71,41 +72,37 @@ public class Connection {
 	public String getWebPage(String path) throws Exception {
 		// sslsocket class that just returns the connection?
 		// try catch??
-		
+
 		Socket echoSocket = new Socket("www.siliconmtn.com", 443);
 		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		SSLSocket sslSocket = (SSLSocket) factory.createSocket(echoSocket, "www.siliconmtn.com", 443, true);
-		
+
 		sslSocket.startHandshake();
-		
+
 		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream())));
 		BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
 
 		out.println("GET " + path + " HTTP/1.0");
 		out.println("Host: www.siliconmtn.com");
-		out.println("Cookie: " + this.cookie);
+		out.println("Cookie: " + this.cookie + "");
 		out.println();
 		out.flush();
-		
+		System.out.println("\n~this.cookie~\n " + this.cookie);
+
+
 		String inputLine;
 		StringBuilder html = new StringBuilder();
 //		StringBuilder header = new StringBuilder();
-		
+
 		while ((inputLine = in.readLine()) != null) {
 //			System.out.println(inputLine);
 			html.append(inputLine).append("\n");
 		}
-		
-//		while ((inputLine = in.readLine()) != null) {
-////			System.out.println(inputLine);
-//			html.append(inputLine).append("\n");
-//		} 
-		
-//		System.out.println(header.toString());
-		System.out.println(html.toString());
-		
-	return html.toString();
 
+//		System.out.println(header.toString());
+//		System.out.println(html.toString());
+
+		return html.toString();
 	}
 	
 	/**
@@ -117,33 +114,45 @@ public class Connection {
 	 * @return string of html to be parsed by jsoup
 	 * @throws Exception 
 	 */
-	public String postWidget(URL login, URL widget) throws Exception {
+	public String getWebPage(String path, String widget) throws Exception {
+		// sslsocket class that just returns the connection?
+		// try catch finally??
+
+		Socket echoSocket = new Socket("smt-stage.qa.siliconmtn.com", 443);
+		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		SSLSocket sslSocket = (SSLSocket) factory.createSocket(echoSocket, "smt-stage.qa.siliconmtn.com", 443, true);
+
+		sslSocket.startHandshake();
+
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream())));
+		BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));		
 		
-//        URL loginUrl = new URL(login);
-//        URL widgetUrl = new URL(widget);
+		String credentials = "cameron.ellis@siliconmtn.com:Smtrul3s!";
+		String encodedCreds = Base64.getEncoder().encodeToString(credentials.getBytes());
+		String basicAuth = "Basic " + encodedCreds;
 		
-		// post function to login - if status == 200 - getwebpage(widget)
-		// html1 = getWebPage()
-		// html2 = getWebPage()
-        
-        HttpsURLConnection postConn = (HttpsURLConnection)login.openConnection();
-        postConn.setRequestMethod("POST");
-        postConn.setDoOutput(true);
-        postConn.setRequestProperty("Authorization", "Basic Y2FtZXJvbi5lbGxpc0BzaWxpY29ubXRuLmNvbTpTbXRydWwzcyE=");
-        postConn.setRequestProperty("Content-Type", "application/json");
-        
-        String data = "{\n  \'emailAddress': 'cameron.ellis@siliconmtn.com',\n  \'password': 'Smtrul3s!',\n}";
-        
-        byte[] out = data.getBytes(StandardCharsets.UTF_8);
-        
-        OutputStream os = postConn.getOutputStream();
-        os.write(out);
-        
-        System.out.println("~~RESPONSE CODE~~\n" + postConn.getResponseCode() + " " + postConn.getResponseMessage() + "\n~~RESPONSE CODE~~");
-        
-//        String html1 = getWebPage(widget);       
-        
-		return null;
+		out.println("POST " + path + " HTTP/1.0");
+		out.println("Host: https://smt-stage.qa.siliconmtn.com");
+		out.println("Cookie: " + this.cookie);
+		out.println("Content-Type: application/x-www-form-urlencoded");
+		out.println("Authorization: " + basicAuth);
+		out.println();
+		out.flush();
+		System.out.println("\n~this.cookie~\n " + this.cookie);
+
+		String inputLine;
+		StringBuilder html = new StringBuilder();
+//		StringBuilder header = new StringBuilder();
+
+		while ((inputLine = in.readLine()) != null) {
+//			System.out.println(inputLine);
+			html.append(inputLine).append("\n");
+		}
+
+//		System.out.println(header.toString());
+//		System.out.println("widgetContent? ~ " + html.toString());
+
+		return html.toString();
 	}
 	
 //	public void close() {
@@ -346,3 +355,28 @@ public class Connection {
 //
 ////System.out.println("html~> " + html);
 //return html.toString();
+
+//
+////URL loginUrl = new URL(login);
+////URL widgetUrl = new URL(widget);
+//
+//// post function to login - if status == 200 - getwebpage(widget)
+//// html1 = getWebPage()
+//// html2 = getWebPage()
+//
+//HttpsURLConnection postConn = (HttpsURLConnection)login.openConnection();
+//postConn.setRequestMethod("POST");
+//postConn.setDoOutput(true);
+//postConn.setRequestProperty("Authorization", "Basic Y2FtZXJvbi5lbGxpc0BzaWxpY29ubXRuLmNvbTpTbXRydWwzcyE=");
+//postConn.setRequestProperty("Content-Type", "application/json");
+//
+//String data = "{\n  \'emailAddress': 'cameron.ellis@siliconmtn.com',\n  \'password': 'Smtrul3s!',\n}";
+//
+//byte[] out = data.getBytes(StandardCharsets.UTF_8);
+//
+//OutputStream os = postConn.getOutputStream();
+//os.write(out);
+//
+//System.out.println("~~RESPONSE CODE~~\n" + postConn.getResponseCode() + " " + postConn.getResponseMessage() + "\n~~RESPONSE CODE~~");
+//
+////String html1 = getWebPage(widget);     

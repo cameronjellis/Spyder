@@ -20,10 +20,8 @@ import java.io.IOException;
 ******************************************************************************/
 
 public class Save {
-	// create folder in root directory
-	
+		
 	public void writeFile(String fileName, String content) {
-		// add check for if file exists 		
 		if (fileName.length() == 0) {
 			fileName = "home";
 		}
@@ -43,6 +41,4 @@ public class Save {
 			e.printStackTrace();
 		}
 	}
-	
-	// iterate over list and write file with the name of siliconmtn + the resource -"/"
 }

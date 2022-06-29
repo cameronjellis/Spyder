@@ -44,7 +44,6 @@ public class Spyder {
 		spyder1.spy();
 	}
 
-
 	/**
 	 * this is the flow control method, will instantiate and call all other 
 	 * classes and methods
@@ -59,10 +58,8 @@ public class Spyder {
 		LinkManager linkMgr = new LinkManager("https://smt-stage.qa.siliconmtn.com"
 				+ "/sb/admintool?cPage=index&actionId=MODULE", "www.siliconmtn.com");
 		
-		
-		
 		String homeHtml = connection.getWebPage("/");
-		System.out.println("homeHTML" + homeHtml);
+//		System.out.println("homeHTML" + homeHtml);
 		Elements linkList = parser.parse(homeHtml, "a[href]");
 		
 		linkMgr.getLtp().addAll(parser.parseLinks(linkList));
@@ -71,31 +68,47 @@ public class Spyder {
 		spyLog.log("~~linkMgr.ltp~~ " + linkMgr.getLtp());
 		spyLog.log("~~linkMgr.urltp~~ " + linkMgr.getUrltp());
 		
-		
+		// add this logic to saver!
 		for (int i = 0; i < linkMgr.getLtp().size(); i++) {
 			
 			String link = linkMgr.getLtp().get(i);
 			
-			if (link.equals("https://smt-stage.qa.siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE")) {
-				continue;
+			if (link.equals("/admintool")) {
+				String content = connection.getWebPage(link, "https://smt-stage.qa."
+						+ "siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE");				
+				String fileName = link.substring(1 , link.length());
+				
+				System.out.println("\n~ headers? ~ \n" + parser.parseHeader(content));
+				System.out.println("\n~ cookies? ~ \n" + parser.parseCookies(parser.parseHeader(content)) + "\n");
+				
+//				if (connection.getCookie() == null) {
+//					connection.setCookie(parser.parseCookies(parser.parseHeader(content)).substring(12).trim());
+//				}
+				
+				saver.writeFile(fileName, content);
+				htmls.add(content);			
+			} else {
+				String content = connection.getWebPage(link);				
+				String fileName = link.substring(1 , link.length());
+				
+				String headers = parser.parseHeader(content);
+				String cookie = parser.parseCookies(parser.parseHeader(content));
+				
+				System.out.println("\n~ headers ~\n" + headers);	
+				System.out.println("\n~ cookies ~\n" + cookie + "\n");
+				
+				
+				if (connection.getCookie() == null) {
+					connection.setCookie(cookie.substring(12).replace("Set-Cookie: ", "; ").trim());
+				}
+				
+				saver.writeFile(fileName, content);
+				htmls.add(content);
 			}
-			
-			String content = connection.getWebPage(link);
-			
-			String fileName = linkMgr.getLtp().get(i).substring(1 , 
-					linkMgr.getLtp().get(i).length());
-			
-
-			
-			saver.writeFile(fileName, content);
-			
-			htmls.add(content);
-//			htmls.add(connection.postWidget(link, link));
 		}		
 		System.out.println(htmls.size());
-
-	}
-	
+		// connection.close();
+	}	
 	// try catch finally
 }
 

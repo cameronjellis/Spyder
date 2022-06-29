@@ -1,5 +1,6 @@
 package com.ellis.spyder;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Parser {
 //		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
 		Document doc = Jsoup.parse(html);
 //		Elements links = doc.select("a[href]");
-		System.out.println("parser```" + doc.select(tag));
+//		System.out.println("parser```" + doc.select(tag));
 		return doc.select(tag);		
 	}
 	
@@ -44,7 +45,10 @@ public class Parser {
 	public List<String> parseLinks(Elements links){
 		String regex = "(\\/)([a-zA-Z]+)";
 		List<String> resources = new ArrayList<>();
-		resources.add("/");
+		
+		// put these two lines into the constructor for linkManager
+		resources.add("/admintool");
+		resources.add("/");		
 		
 		for (int i = 0; i < links.size(); i++) {
 			String resource = links.get(i).attr("href");
@@ -56,5 +60,31 @@ public class Parser {
 		System.out.println("resources~> " + resources);
 		
 		return resources;
+	}
+	
+	public String parseHeader(String html){
+		
+		String headerFields = html.split("\n\n")[0];
+	
+		return headerFields;
+	}
+	
+	public String parseCookies(String header) {
+		String regex = "(?:Set-Cookie: )([a-zA-Z0-9]+(=)[a-zA-Z0-9\\/+]+)";
+		StringBuilder cookies = new StringBuilder();
+		String[] cookieFields = header.split("\n");
+
+		for (String cookie : cookieFields) {
+//			System.out.println("cookie" + cookie);
+			String[] fields = cookie.split(";");
+			for (String field : fields) {
+//				System.out.println("field" + field);
+				if (field.matches(regex)) {
+					cookies.append(field);
+				}
+			}
+		}
+
+		return cookies.toString();
 	}
 }
