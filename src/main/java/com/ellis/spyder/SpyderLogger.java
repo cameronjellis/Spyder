@@ -21,16 +21,9 @@ import java.util.logging.Logger;
 public class SpyderLogger {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	/**
-	 * 
-	 */
-	public void sampleLog() {
-		logger.log(Level.WARNING, "Welcome to Edureka!");
-	}
 	
 	/**
-	 * @param s
+	 * @param s - the string to log
 	 */
 	public void log(String s) {
 		logger.log(Level.WARNING, s);

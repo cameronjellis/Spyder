@@ -3,7 +3,7 @@ package com.ellis.spyder;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
+
 
 /*******************************************************************************
 *
@@ -21,6 +21,11 @@ import java.io.IOException;
 
 public class Save {
 		
+	/**
+	 * writes content to a specified file name and directory
+	 * @param fileName to save into
+	 * @param content to write
+	 */
 	public void writeFile(String fileName, String content) {
 		if (fileName.length() == 0) {
 			fileName = "home";
@@ -36,7 +41,7 @@ public class Save {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFile))) {
 			writer.write(content);
-			System.out.println("wrote " + fileName + ".html");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

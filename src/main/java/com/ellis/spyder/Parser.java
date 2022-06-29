@@ -1,6 +1,5 @@
 package com.ellis.spyder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,19 +26,19 @@ public class Parser {
 	
 	/**
 	 * @param html
-	 * @return
+	 * @return Elements that were parsed based on passed tag
 	 * @throws Exception
 	 */
-	public Elements parse(String html, String tag) throws Exception{
-//		String html = getWebPage("https://www.siliconmtn.com/contact", 443);
+	public Elements parse(String html, String tag){
 		Document doc = Jsoup.parse(html);
-//		Elements links = doc.select("a[href]");
-//		System.out.println("parser```" + doc.select(tag));
+
 		return doc.select(tag);		
 	}
 	
 	/**
-	 * @param links
+	 * takes the elements selected in parse() and turns them into usable 
+	 * resources ex /about, /services
+	 * @param links to parse 
 	 * @return
 	 */
 	public List<String> parseLinks(Elements links){
@@ -56,29 +55,35 @@ public class Parser {
 			if (resource.matches(regex) && !resources.contains(resource))
 			 resources.add(resource);
 		}
-		
-		System.out.println("resources~> " + resources);
-		
+
 		return resources;
 	}
 	
+	/**
+	 * will parse a string and pull out the header fields
+	 * @param html
+	 * @return headerFields as a string separated by "\n"
+	 */
 	public String parseHeader(String html){
-		
-		String headerFields = html.split("\n\n")[0];
 	
-		return headerFields;
+		return html.split("\n\n")[0];
 	}
 	
+	/**
+	 * will take a header and pull out all cookies to pass back in later
+	 * @param header
+	 * @return cookies in an unformatted string
+	 */
 	public String parseCookies(String header) {
 		String regex = "(?:Set-Cookie: )([a-zA-Z0-9]+(=)[a-zA-Z0-9\\/+]+)";
 		StringBuilder cookies = new StringBuilder();
 		String[] cookieFields = header.split("\n");
 
 		for (String cookie : cookieFields) {
-//			System.out.println("cookie" + cookie);
+
 			String[] fields = cookie.split(";");
 			for (String field : fields) {
-//				System.out.println("field" + field);
+
 				if (field.matches(regex)) {
 					cookies.append(field);
 				}

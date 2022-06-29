@@ -15,5 +15,5 @@ package com.ellis.spyder;
 ******************************************************************************/
 
 public class Cookie {
-
+	String cookies;
 }

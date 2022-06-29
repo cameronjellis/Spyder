@@ -1,10 +1,7 @@
 package com.ellis.spyder;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.jsoup.select.Elements;
 
@@ -46,7 +43,7 @@ public class Spyder {
 
 	/**
 	 * this is the flow control method, will instantiate and call all other 
-	 * classes and methods
+	 * classes and methods - gets original html to parse for links, 
 	 * @throws Exception
 	 */
 	public void spy() throws Exception {
@@ -59,7 +56,6 @@ public class Spyder {
 				+ "/sb/admintool?cPage=index&actionId=MODULE", "www.siliconmtn.com");
 		
 		String homeHtml = connection.getWebPage("/");
-//		System.out.println("homeHTML" + homeHtml);
 		Elements linkList = parser.parse(homeHtml, "a[href]");
 		
 		linkMgr.getLtp().addAll(parser.parseLinks(linkList));
@@ -75,12 +71,16 @@ public class Spyder {
 			
 			if (link.equals("/admintool")) {
 				String content = connection.getWebPage(link, "https://smt-stage.qa."
-						+ "siliconmtn.com/sb/admintool?cPage=index&actionId=MODULE");				
+						+ "siliconmtn.com/admintool");				
 				String fileName = link.substring(1 , link.length());
 				
-				System.out.println("\n~ headers? ~ \n" + parser.parseHeader(content));
-				System.out.println("\n~ cookies? ~ \n" + parser.parseCookies(parser.parseHeader(content)) + "\n");
+				String headers = parser.parseHeader(content);
+				String cookie = parser.parseCookies(parser.parseHeader(content));
 				
+				System.out.println("\n~ headers ~\n" + headers);	
+				System.out.println("\n~ cookies ~\n" + cookie + "\n");
+				
+				// move this to parser?
 //				if (connection.getCookie() == null) {
 //					connection.setCookie(parser.parseCookies(parser.parseHeader(content)).substring(12).trim());
 //				}
@@ -97,7 +97,8 @@ public class Spyder {
 				System.out.println("\n~ headers ~\n" + headers);	
 				System.out.println("\n~ cookies ~\n" + cookie + "\n");
 				
-				
+				// move this logic to parser? or separate method in Spyder
+				// formats the cookie to be able to be passed into the headers
 				if (connection.getCookie() == null) {
 					connection.setCookie(cookie.substring(12).replace("Set-Cookie: ", "; ").trim());
 				}
@@ -111,22 +112,3 @@ public class Spyder {
 	}	
 	// try catch finally
 }
-
-//
-///**
-// * key is a URL, value is whether it has been downloaded or not
-// * @return
-// */
-//public URL nextUrl(Map<URL, Boolean> urls) {
-//	
-//	for (Entry<URL, Boolean> entry : urls.entrySet()) {
-//		if (!entry.getValue()) {
-////			entry.setValue(true);
-//			
-//			return entry.getKey();
-//		} 
-//	} 
-//	
-//	return null;
-//}
-//
