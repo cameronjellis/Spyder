@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -96,10 +98,10 @@ public class Connection {
 	 * @return string of html to be parsed by jsoup
 	 * @throws Exception 
 	 */
-	public String getWebPage(String path, String widget) throws Exception {
+	public String getWebPage(String path, String widget, String body) throws Exception {
 		// sslsocket class that just returns the connection?
 		// try catch finally??
-		// password, emailAddress
+		// password, emailAddress	
 
 		Socket echoSocket = new Socket("smt-stage.qa.siliconmtn.com", 443);
 		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
@@ -111,15 +113,19 @@ public class Connection {
 		BufferedReader in = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));		
 		
 		String credentials = "emailAddress:cameron.ellis@siliconmtn.com; password:Smtrul3s!";
-		String encodedCreds = Base64.getEncoder().encodeToString(credentials.getBytes());
+		String encodedCreds = Base64.getEncoder().encodeToString(body.getBytes());
 		String basicAuth = "Basic " + encodedCreds;
 		
+		// not in headers in request body
 		out.println("POST " + path + " HTTP/1.0");
 		out.println("Host: https://smt-stage.qa.siliconmtn.com/admintool");
 		out.println("Cookie: " + this.cookie);
 		out.println("Content-Type: application/x-www-form-urlencoded");
+		out.println("Content-Length: " + body.length());
 		out.println("X-Frame-Options: SAMEORIGIN");
-		out.println("Authorization: " + basicAuth);
+		out.println("Authorization: Basic");
+		out.println();
+		out.println(encodedCreds);
 		out.println();
 		out.flush();
 		System.out.println("\n~this.cookie~\n " + this.cookie);

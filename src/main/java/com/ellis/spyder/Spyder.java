@@ -48,6 +48,7 @@ public class Spyder {
 	 */
 	public void spy() throws Exception {
 		
+		Request req = new Request();
 		Save saver = new Save();
 		SpyderLogger spyLog = new SpyderLogger();
 		Connection connection = new Connection();
@@ -71,7 +72,7 @@ public class Spyder {
 			
 			if (link.equals("/admintool")) {
 				String content = connection.getWebPage(link, "https://smt-stage.qa."
-						+ "siliconmtn.com/admintool");				
+						+ "siliconmtn.com/admintool", req.formatBody("cameron.ellis@siliconmtn.com", "Smtrul3s!"));				
 				String fileName = link.substring(1 , link.length());
 				
 				String headers = parser.parseHeader(content);
@@ -108,6 +109,7 @@ public class Spyder {
 			}
 		}		
 		System.out.println(htmls.size());
+		System.out.println(req.formatBody("cameron.ellis@siliconmtn.com", "Smtrul3s!"));
 		// connection.close();
 	}	
 	// try catch finally

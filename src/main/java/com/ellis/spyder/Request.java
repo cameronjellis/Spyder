@@ -1,5 +1,8 @@
 package com.ellis.spyder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*******************************************************************************
 *
 *<b>Title:</b> Request.java
@@ -16,7 +19,13 @@ package com.ellis.spyder;
 
 public class Request {
 	
+	Map<String, String> reqBody = new HashMap<>();
 	
+	public String formatBody(String emailAddress, String password) {
+		this.reqBody.put("emailAddress", emailAddress);
+		this.reqBody.put("password", password);
+		return this.reqBody.toString();
+	}
 
 	public void getRequest() {
 		
